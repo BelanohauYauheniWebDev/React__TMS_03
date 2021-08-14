@@ -1,4 +1,4 @@
-const foods = [
+const products = [
 {
 id: 1,
 name: "Биг Тейсти",
