@@ -77,9 +77,9 @@ const products = [
 const uniqIngredients1 = [
   ...new Set(products.map((product) => product.ingredients).flat()),
 ];
+
 //second way reduce and new Set
 //prettier-ignore
-
 const uniqIngredients2 = products.reduce((acc, { ingredients }) => [...new Set([...acc, ...ingredients])],[]);
 
 //third way reduce/filter
@@ -134,4 +134,22 @@ const stringFromProducts = (enterArray, enterId) => {
       ? (acc += `${name}:${price} ${currency}, `)
       : acc;
   }, "");
+};
+
+//10. Создать функцию, которая принимает массив продуктов и массив айдишников, и возвращает объект, c общими суммами цен продуктов(у которых айдишники совпадают) по каждой валюте.
+
+const objectFromProductsByCurrency = (enterArray, enterId) => {
+  return enterArray.reduce(
+    (acc, product) => {
+      const { id, price, currency } = product;
+      if (enterId.includes(id) && currency === "usd") {
+        acc.usd += price;
+      }
+      if (enterId.includes(id) && currency === "euro") {
+        acc.euro += price;
+      }
+      return acc;
+    },
+    { euro: 0, usd: 0 }
+  );
 };
