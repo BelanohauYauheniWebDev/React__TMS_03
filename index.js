@@ -78,13 +78,16 @@ const uniqIngredients1 = [
   ...new Set(products.map((product) => product.ingredients).flat()),
 ];
 //second way reduce and new Set
-const uniqIngredients2 = products.reduce((acc, { ingredients }) => {
-  return [...new Set([...acc, ...ingredients])];
-}, []);
+//prettier-ignore
+
+const uniqIngredients2 = products.reduce((acc, { ingredients }) => [...new Set([...acc, ...ingredients])],[]);
 
 //third way reduce/filter
+//prettier-ignore
 const uniqIngredients3 = products.reduce((acc, { ingredients }) => {
-  return [...acc, ...ingredients].filter((element, i, self) => {
-    return self.indexOf(element) === i;
-  });
+  return [...acc, ...ingredients].filter((element, i, self) => self.indexOf(element) === i);
 }, []);
+
+//2. Создать функцию, которая принимает массив продуктов и id, и возвращает продукт с таким же id.
+const filterByIdFunction = (enterArray, id) =>
+  enterArray.filter((element) => element.id === id);
