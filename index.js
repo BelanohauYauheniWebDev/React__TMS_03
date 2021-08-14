@@ -106,3 +106,7 @@ const groupProductsByType = products.reduce((acc, product) => {
 //5. Создать массив с продуктами, которые доступны.
 //prettier-ignore
 const filterByAvailable = products.filter(product=>product.available===true)
+
+//6. Создать функцию, которая принимает массив продуктов и строку = название ингредиента, и возвращает массив с продуктами, где содержится такой ингредиент.
+//prettier-ignore
+const findProductByIngredient = (enterArray, substring) => products.filter((product) => product.ingredients.includes(substring));
