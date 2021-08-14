@@ -112,16 +112,26 @@ const filterByAvailable = products.filter(product=>product.available===true)
 const findProductByIngredient = (enterArray, substring) => products.filter((product) => product.ingredients.includes(substring));
 
 //7. Создать функцию, которая принимает массив продуктов и массив ингредиентов, и возвращает массив с продуктами, где содержатся такие ингредиенты.
-const findProductByIngredients = (enterArray, enterProduct) => {
+const findProductByIngredients = (enterArray, enterIngredients) => {
   return enterArray.reduce((acc, product) => {
     const { ingredients } = product;
-    return ingredients.some((el) => enterProduct.indexOf(el) >= 0)
+    return ingredients.some((el) => enterIngredients.indexOf(el) >= 0)
       ? [...acc, product]
       : [...acc];
   }, []);
 };
-//8. Создать функцию, которая принимает массив продуктов и цену, и возвращает массив продуктов, где цена продукта ниже или равна цене из второго аргумента функции.
 
+//8. Создать функцию, которая принимает массив продуктов и цену, и возвращает массив продуктов, где цена продукта ниже или равна цене из второго аргумента функции.
 const filterProductsByPrice = (enterArray, price) => {
   return enterArray.filter((product) => product.price <= price);
+};
+
+//9. Создать функцию, которая принимает массив продуктов и массив айдишников, и возвращает строку, где строка включает в себя название продуктов и их цену через запятую, у которых айдишники совпадают.
+const stringFromProducts = (enterArray, enterId) => {
+  return enterArray.reduce((acc, product) => {
+    const { id, name, price, currency } = product;
+    return enterId.includes(id)
+      ? (acc += `${name}:${price} ${currency}, `)
+      : acc;
+  }, "");
 };
