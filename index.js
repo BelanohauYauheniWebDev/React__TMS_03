@@ -110,3 +110,14 @@ const filterByAvailable = products.filter(product=>product.available===true)
 //6. Создать функцию, которая принимает массив продуктов и строку = название ингредиента, и возвращает массив с продуктами, где содержится такой ингредиент.
 //prettier-ignore
 const findProductByIngredient = (enterArray, substring) => products.filter((product) => product.ingredients.includes(substring));
+
+//7. Создать функцию, которая принимает массив продуктов и массив ингредиентов, и возвращает массив с продуктами, где содержатся такие ингредиенты.
+
+const findProductByIngredients = (enterArray, enterProduct) => {
+  return products.reduce((acc, product) => {
+    const { ingredients } = product;
+    return ingredients.some((el) => enterProduct.indexOf(el) >= 0)
+      ? [...acc, product]
+      : [...acc];
+  }, []);
+};
