@@ -96,3 +96,9 @@ const filterByIdFunction = (enterArray, id) =>
 const coastPrice = products
   .map((product) => product.price)
   .sort((a, b) => a - b);
+
+//4. Сгруппировать продукты по типам. Создать объект, где ключ это тип, а значение - массив с продуктами.
+const groupProductsByType = products.reduce((acc, product) => {
+  const { type } = product;
+  return { ...acc, [type]: [...(acc[type] || []), product] };
+}, {});
