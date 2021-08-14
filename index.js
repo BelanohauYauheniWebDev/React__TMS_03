@@ -91,3 +91,8 @@ const uniqIngredients3 = products.reduce((acc, { ingredients }) => {
 //2. Создать функцию, которая принимает массив продуктов и id, и возвращает продукт с таким же id.
 const filterByIdFunction = (enterArray, id) =>
   enterArray.filter((element) => element.id === id);
+
+//3. Создать массив с отсортированными продуктами по цене.
+const coastPrice = products
+  .map((product) => product.price)
+  .sort((a, b) => a - b);
