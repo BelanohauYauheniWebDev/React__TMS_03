@@ -112,12 +112,16 @@ const filterByAvailable = products.filter(product=>product.available===true)
 const findProductByIngredient = (enterArray, substring) => products.filter((product) => product.ingredients.includes(substring));
 
 //7. Создать функцию, которая принимает массив продуктов и массив ингредиентов, и возвращает массив с продуктами, где содержатся такие ингредиенты.
-
 const findProductByIngredients = (enterArray, enterProduct) => {
-  return products.reduce((acc, product) => {
+  return enterArray.reduce((acc, product) => {
     const { ingredients } = product;
     return ingredients.some((el) => enterProduct.indexOf(el) >= 0)
       ? [...acc, product]
       : [...acc];
   }, []);
+};
+//8. Создать функцию, которая принимает массив продуктов и цену, и возвращает массив продуктов, где цена продукта ниже или равна цене из второго аргумента функции.
+
+const filterProductsByPrice = (enterArray, price) => {
+  return enterArray.filter((product) => product.price <= price);
 };
