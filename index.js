@@ -102,3 +102,7 @@ const groupProductsByType = products.reduce((acc, product) => {
   const { type } = product;
   return { ...acc, [type]: [...(acc[type] || []), product] };
 }, {});
+
+//5. Создать массив с продуктами, которые доступны.
+//prettier-ignore
+const filterByAvailable = products.filter(product=>product.available===true)
