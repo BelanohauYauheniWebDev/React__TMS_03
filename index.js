@@ -131,7 +131,7 @@ const stringFromProducts = (enterArray, enterId) => {
   return enterArray.reduce((acc, product) => {
     const { id, name, price, currency } = product;
     return enterId.includes(id)
-      ? (acc += `${name}:${price} ${currency}, `)
+      ? (acc = acc + `${name}:${price} ${currency}, `)
       : acc;
   }, "");
 };
