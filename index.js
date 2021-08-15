@@ -74,17 +74,17 @@ const products = [
 ];
 //1. Собрать в массив ингредиентов (без повторения).
 //first way with flat()
-const uniqIngredients1 = [
+const getProductsById1 = [
   ...new Set(products.map((product) => product.ingredients).flat()),
 ];
 
 //second way reduce and new Set
 //prettier-ignore
-const uniqIngredients2 = products.reduce((acc, { ingredients }) => [...new Set([...acc, ...ingredients])],[]);
+const getProductsById2 = products.reduce((acc, { ingredients }) => [...new Set([...acc, ...ingredients])],[]);
 
 //third way reduce/filter
 //prettier-ignore
-const uniqIngredients3 = products.reduce((acc, { ingredients }) => {
+const getProductsById3 = products.reduce((acc, { ingredients }) => {
   return [...acc, ...ingredients].filter((element, i, self) => self.indexOf(element) === i);
 }, []);
 
@@ -105,7 +105,7 @@ const groupProductsByType = products.reduce((acc, product) => {
 
 //5. Создать массив с продуктами, которые доступны.
 //prettier-ignore
-const filterByAvailable = products.filter(product=>product.available===true)
+const filterByAvailable = products.filter(({available})=>available)
 
 //6. Создать функцию, которая принимает массив продуктов и строку = название ингредиента, и возвращает массив с продуктами, где содержится такой ингредиент.
 //prettier-ignore
@@ -152,21 +152,18 @@ const objectFromProductsByCurrency = (enterArray, enterId) => {
   );
 };
 
-console.log(objectFromProductsByCurrency(products, [1, 2, 3]));
-
 //11. Создать функцию, которая принимает массив продуктов и массив айдишников, и return строку, где число равно сумме цен продуктов + значок валюты. При этом если, у нас попадают продукты с разными валютами, то мы должны получить сумму в евро и перевести доллары в евро(использовать для этого курс евро/доллар).
-//prettier-ignore
-const sumOfAllProductsById = (enterArray, enterId) => {
+const getSumOfAllProductsById = (enterArray, enterId) => {
   const summa = enterArray.reduce(
     (acc = { currency, total }, product) => {
       const { id, price, currency } = product;
       if (enterId.includes(id)) {
-        (acc.currency !== currency) ? acc.currency = "euro" : null;
-        (currency === acc.currency)
-          ? (acc.total += price)
-          : (acc.total += price * 0.85);
+        acc.currency !== currency ? (acc.currency = "euro") : null;
+        return currency === acc.currency
+          ? (acc = { ...acc, total: acc.total + price })
+          : (acc = { ...acc, total: acc.total + price * 0.85 });
       }
-      return acc;
+      // return acc;
     },
     {
       total: 0,
@@ -175,3 +172,5 @@ const sumOfAllProductsById = (enterArray, enterId) => {
   );
   return `${summa.total} ${summa.currency}`;
 };
+
+console.log(getSumOfAllProductsById(products, [4]));
