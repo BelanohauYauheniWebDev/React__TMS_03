@@ -159,7 +159,7 @@ const sumOfAllProductsById = (enterArray, enterId) => {
     (acc = { euro, usd, currency }, product) => {
       const { id, price, currency } = product;
       if (enterId.includes(id)) {
-        currency === "euro" ? (acc.euro = +price) : (acc.usd = +price);
+        currency === "euro" ? (acc.euro += price) : (acc.usd += price);
         acc.currency = currency;
       }
       return acc;
