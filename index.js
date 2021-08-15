@@ -154,29 +154,26 @@ const objectFromProductsByCurrency = (enterArray, enterId) => {
 };
 
 //11. Создать функцию, которая принимает массив продуктов и массив айдишников, и return строку, где число равно сумме цен продуктов + значок валюты. При этом если, у нас попадают продукты с разными валютами, то мы должны получить сумму в евро и перевести доллары в евро(использовать для этого курс евро/доллар).
+//prettier-ignore
 const sumOfAllProductsById = (enterArray, enterId) => {
-  const total = enterArray.reduce(
-    (acc = { euro, usd, currency }, product) => {
+  const summa = enterArray.reduce(
+    (acc = { currency, total }, product) => {
       const { id, price, currency } = product;
       if (enterId.includes(id)) {
-        if (acc.currency !== currency) {
-          acc.currency = "euro";
-        }
-        currency === "euro" ? (acc.euro += price) : (acc.usd += price);
+        (acc.currency !== currency) ? acc.currency = "euro" : null;
+
+        (currency === acc.currency)
+          ? (acc.total += price)
+          : (acc.total += price * 0.85);
       }
       return acc;
     },
     {
-      euro: 0,
-      usd: 0,
+      total: 0,
       currency: "usd",
     }
   );
-  return total.euro > 0 && total.usd > 0
-    ? total.euro + total.usd * 0.85 + total.currency
-    : total.euro > 0
-    ? total.euro + total.currency
-    : total.usd + total.currency;
+  return `${summa.total} ${summa.currency}`;
 };
 
-console.log(sumOfAllProductsById(products, [1, 4]));
+console.log(sumOfAllProductsById(products, [2, 4]));
