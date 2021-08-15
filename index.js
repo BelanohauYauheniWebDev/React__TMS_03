@@ -159,20 +159,24 @@ const sumOfAllProductsById = (enterArray, enterId) => {
     (acc = { euro, usd, currency }, product) => {
       const { id, price, currency } = product;
       if (enterId.includes(id)) {
+        if (acc.currency !== currency) {
+          acc.currency = "euro";
+        }
         currency === "euro" ? (acc.euro += price) : (acc.usd += price);
-        acc.currency = currency;
       }
       return acc;
     },
     {
       euro: 0,
       usd: 0,
-      currency: "",
+      currency: "usd",
     }
   );
   return total.euro > 0 && total.usd > 0
-    ? total.euro + total.usd * 0.85 + "euro"
+    ? total.euro + total.usd * 0.85 + total.currency
     : total.euro > 0
-    ? total.euro + "euro"
-    : total.usd + "usd";
+    ? total.euro + total.currency
+    : total.usd + total.currency;
 };
+
+console.log(sumOfAllProductsById(products, [1, 4]));
