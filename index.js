@@ -1,3 +1,46 @@
+const userSettings = [
+  {
+    id: 1,
+    ingredient: "flour",
+    active: true,
+  },
+  {
+    id: 2,
+    ingredient: "beef",
+    active: false,
+  },
+  {
+    id: 3,
+    ingredient: "cheese",
+    active: true,
+  },
+  {
+    id: 4,
+    ingredient: "sauce",
+    active: true,
+  },
+  {
+    id: 5,
+    ingredient: "cucumber",
+    active: true,
+  },
+  {
+    id: 6,
+    ingredient: "chicken",
+    active: false,
+  },
+  {
+    id: 7,
+    ingredients: "potato",
+    active: true,
+  },
+  {
+    id: 8,
+    ingredients: "salad",
+    active: true,
+  },
+];
+
 const products = [
   {
     id: 1,
@@ -173,4 +216,26 @@ const getSumOfAllProductsById = (enterArray, enterId) => {
   return `${summa.total} ${summa.currency}`;
 };
 
-console.log(getSumOfAllProductsById(products, [4]));
+//!part2
+//1. Создать массив объектов вида { categoryName: 'burger', products: [...]}. 'burger' - это наше поле type
+const getObgectFromProducts = products.reduce((acc, product) => {
+  const { type } = product;
+  const obj = {
+    categoryName: type,
+    products: [product],
+  };
+  acc = [...acc, obj].reduce((result, item) => {
+    const index = result.findIndex(
+      (resultItem) => resultItem.categoryName === item.categoryName
+    );
+    if (index === -1) {
+      result = [...result, item];
+    } else {
+      product.type === result[index].categoryName
+        ? (item.products = [...item.products, product])
+        : null;
+    }
+    return result;
+  }, acc);
+  return acc;
+}, []);
