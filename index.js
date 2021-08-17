@@ -31,12 +31,12 @@ const userSettings = [
   },
   {
     id: 7,
-    ingredients: "potato",
+    ingredient: "potato",
     active: true,
   },
   {
     id: 8,
-    ingredients: "salad",
+    ingredient: "salad",
     active: true,
   },
 ];
@@ -239,3 +239,19 @@ const getObgectFromProducts = products.reduce((acc, product) => {
   }, acc);
   return acc;
 }, []);
+
+const filterBuUserPreferences = (products, userSettings) => {
+  const userPreferences = userSettings.reduce((acc, { ingredient, active }) => {
+    !active ? (acc = [...acc, ingredient]) : null;
+    return acc;
+  }, []);
+  return products.reduce((acc, product) => {
+    const { ingredients } = product;
+    !ingredients.some((el) => userPreferences.includes(el))
+      ? (acc = [...(acc || []), product])
+      : null;
+    return acc;
+  }, []);
+};
+
+console.log(filterBuUserPreferences(products, userSettings));
