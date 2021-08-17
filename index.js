@@ -203,10 +203,10 @@ const getSumOfAllProductsById = (enterArray, enterId) => {
       if (enterId.includes(id)) {
         acc.currency !== currency ? (acc.currency = "euro") : null;
         return currency === acc.currency
-          ? (acc = { ...acc, total: acc.total + price })
-          : (acc = { ...acc, total: acc.total + price * 0.85 });
+          ? { ...acc, total: acc.total + price }
+          : { ...acc, total: acc.total + price * 0.85 };
       }
-      // return acc;
+      return acc;
     },
     {
       total: 0,
@@ -218,6 +218,8 @@ const getSumOfAllProductsById = (enterArray, enterId) => {
 
 //!part2
 //1. Создать массив объектов вида { categoryName: 'burger', products: [...]}. 'burger' - это наше поле type
+
+//First way with mutation
 const getObgectFromProducts = products.reduce((acc, product) => {
   const { type } = product;
   const obj = {
@@ -229,7 +231,7 @@ const getObgectFromProducts = products.reduce((acc, product) => {
       (resultItem) => resultItem.categoryName === item.categoryName
     );
     if (index === -1) {
-      result = [...result, item];
+      return [...result, item];
     } else {
       product.type === result[index].categoryName
         ? (item.products = [...item.products, product])
@@ -239,18 +241,24 @@ const getObgectFromProducts = products.reduce((acc, product) => {
   }, acc);
   return acc;
 }, []);
+//second way
+const getObgectFromProducts2 = Object.entries(groupProductsByType).reduce(
+  (acc, key) => {
+    return { ...acc, [key[0]]: key[1] };
+  },
+  []
+);
+
 //2. Основываясь на настройки ингредиента пользователя. Создать функцию, которая вернет продукты, в которых не содержится запрещенных пользователем ингредиентов.
 const filterBuUserPreferences = (products, userSettings) => {
   const userPreferences = userSettings.reduce((acc, { ingredient, active }) => {
-    !active ? (acc = [...acc, ingredient]) : null;
-    return acc;
+    return !active ? [...acc, ingredient] : acc;
   }, []);
   return products.reduce((acc, product) => {
     const { ingredients } = product;
-    !ingredients.some((el) => userPreferences.includes(el))
-      ? (acc = [...(acc || []), product])
-      : null;
-    return acc;
+    return !ingredients.some((el) => userPreferences.includes(el))
+      ? [...(acc || []), product]
+      : acc;
   }, []);
 };
 
@@ -269,24 +277,20 @@ const getObjFromProductsAndFilterByUserPreference = filterBuUserPreferences(
       (resultItem) => resultItem.categoryName === item.categoryName
     );
     if (index === -1) {
-      result = [...result, item];
+      return [...result, item];
     } else {
-      product.type === result[index].categoryName
-        ? (item.products = [...item.products, product])
-        : null;
+      return product.type === result[index].categoryName
+        ? [...item.products, product]
+        : item.products;
     }
-    return result;
   }, acc);
   return acc;
 }, []);
 
 //4. Создать функцию, которая принимает массив продуктов и строку, и возвращает отфильтрованный массив, где строка входит в название продукта или ингредиента.
 const getFilterProductsBySubstring = (products, substring) => {
-  return products.filter((product) => {
-    if (
-      product.type.includes(substring) ||
-      product.ingredients.includes(substring)
-    ) {
+  return products.filter(({ type, ingredients }) => {
+    if (type.includes(substring) || ingredients.includes(substring)) {
       return product;
     }
   });
@@ -296,18 +300,21 @@ const getFilterProductsBySubstring = (products, substring) => {
 const filterProductsByUserPreferenceAndByPrice = (
   products,
   userSettings,
-  priceEnter
+  isCorectPrice
 ) => {
   const userPreferences = userSettings.reduce((acc, { ingredient, active }) => {
-    !active ? (acc = [...acc, ingredient]) : null;
-    return acc;
+    return !active ? [...acc, ingredient] : acc;
   }, []);
   return products.reduce((acc, product) => {
     const { ingredients, price } = product;
-    !ingredients.some((el) => userPreferences.includes(el)) &&
-    price <= priceEnter
-      ? (acc = [...(acc || []), product])
-      : null;
-    return acc;
+    return !ingredients.some((hasIngredient) =>
+      userPreferences.includes(hasIngredient)
+    ) && price <= isCorectPrice
+      ? [...(acc || []), product]
+      : acc;
   }, []);
 };
+
+// console.log(
+//   filterProductsByUserPreferenceAndByPrice(products, userSettings, 2)
+// );
