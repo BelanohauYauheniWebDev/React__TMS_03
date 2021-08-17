@@ -244,10 +244,11 @@ const getObgectFromProducts = products.reduce((acc, product) => {
 //second way
 const getObgectFromProducts2 = Object.entries(groupProductsByType).reduce(
   (acc, key) => {
-    return { ...acc, [key[0]]: key[1] };
+    return [...acc, { categoryName: key[0], products: key[1] }];
   },
   []
 );
+console.log(getObgectFromProducts2);
 
 //2. Основываясь на настройки ингредиента пользователя. Создать функцию, которая вернет продукты, в которых не содержится запрещенных пользователем ингредиентов.
 const filterBuUserPreferences = (products, userSettings) => {
