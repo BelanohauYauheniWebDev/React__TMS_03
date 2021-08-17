@@ -253,3 +253,29 @@ const filterBuUserPreferences = (products, userSettings) => {
     return acc;
   }, []);
 };
+
+//3. Создать массив объектов вида { categoryName: 'burger', products: [...]}, где продукты  соответствуют предпочтения пользователя по продуктам. Если в категории нет продуктов после фильтрации по ингредиентам, то такую категорию мы не возвращаем.
+const getObjFromProductsAndFilterByUserPreference = filterBuUserPreferences(
+  products,
+  userSettings
+).reduce((acc, product) => {
+  const { type } = product;
+  const obj = {
+    categoryName: type,
+    products: [product],
+  };
+  acc = [...acc, obj].reduce((result, item) => {
+    const index = result.findIndex(
+      (resultItem) => resultItem.categoryName === item.categoryName
+    );
+    if (index === -1) {
+      result = [...result, item];
+    } else {
+      product.type === result[index].categoryName
+        ? (item.products = [...item.products, product])
+        : null;
+    }
+    return result;
+  }, acc);
+  return acc;
+}, []);
