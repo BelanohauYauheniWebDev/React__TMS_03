@@ -279,3 +279,35 @@ const getObjFromProductsAndFilterByUserPreference = filterBuUserPreferences(
   }, acc);
   return acc;
 }, []);
+
+//4. Создать функцию, которая принимает массив продуктов и строку, и возвращает отфильтрованный массив, где строка входит в название продукта или ингредиента.
+const getFilterProductsBySubstring = (products, substring) => {
+  return products.filter((product) => {
+    if (
+      product.type.includes(substring) ||
+      product.ingredients.includes(substring)
+    ) {
+      return product;
+    }
+  });
+};
+
+//5. Создать функцию, которая принимает **массив продуктов**, **массив ингредиентов**(настройки пользователя по предпочтения) и **число(цену)**, и возвращает отфильтрованный массив, где цена продукта ниже или равна 3 аргументу и все ингредиенты у продукта соответствуют предпочтениям пользователя.
+const filterProductsByUserPreferenceAndByPrice = (
+  products,
+  userSettings,
+  priceEnter
+) => {
+  const userPreferences = userSettings.reduce((acc, { ingredient, active }) => {
+    !active ? (acc = [...acc, ingredient]) : null;
+    return acc;
+  }, []);
+  return products.reduce((acc, product) => {
+    const { ingredients, price } = product;
+    !ingredients.some((el) => userPreferences.includes(el)) &&
+    price <= priceEnter
+      ? (acc = [...(acc || []), product])
+      : null;
+    return acc;
+  }, []);
+};
