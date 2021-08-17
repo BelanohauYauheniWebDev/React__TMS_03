@@ -239,7 +239,7 @@ const getObgectFromProducts = products.reduce((acc, product) => {
   }, acc);
   return acc;
 }, []);
-
+//2. Основываясь на настройки ингредиента пользователя. Создать функцию, которая вернет продукты, в которых не содержится запрещенных пользователем ингредиентов.
 const filterBuUserPreferences = (products, userSettings) => {
   const userPreferences = userSettings.reduce((acc, { ingredient, active }) => {
     !active ? (acc = [...acc, ingredient]) : null;
@@ -253,5 +253,3 @@ const filterBuUserPreferences = (products, userSettings) => {
     return acc;
   }, []);
 };
-
-console.log(filterBuUserPreferences(products, userSettings));
