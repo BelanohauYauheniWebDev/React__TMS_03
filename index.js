@@ -173,9 +173,7 @@ const filterProductsByPrice = (enterArray, price) => {
 const stringFromProducts = (enterArray, enterId) => {
   return enterArray.reduce((acc, product) => {
     const { id, name, price, currency } = product;
-    return enterId.includes(id)
-      ? (acc = acc + `${name}:${price} ${currency}, `)
-      : acc;
+    return enterId.includes(id) ? acc + `${name}:${price} ${currency}, ` : acc;
   }, "");
 };
 
@@ -185,9 +183,9 @@ const objectFromProductsByCurrency = (enterArray, enterId) => {
     (acc, product) => {
       const { id, price, currency } = product;
       if (enterId.includes(id)) {
-        currency === "usd"
-          ? (acc = { ...acc, usd: acc.usd + price })
-          : (acc = { ...acc, euro: acc.euro + price });
+        return currency === "usd"
+          ? { ...acc, usd: acc.usd + price }
+          : { ...acc, euro: acc.euro + price };
       }
       return acc;
     },
@@ -215,6 +213,7 @@ const getSumOfAllProductsById = (enterArray, enterId) => {
   );
   return `${summa.total} ${summa.currency}`;
 };
+console.log(getSumOfAllProductsById(products, [1, 2, 3]));
 
 //!part2
 //1. Создать массив объектов вида { categoryName: 'burger', products: [...]}. 'burger' - это наше поле type
@@ -248,7 +247,8 @@ const getObgectFromProducts2 = Object.entries(groupProductsByType).reduce(
   },
   []
 );
-console.log(getObgectFromProducts2);
+
+console.log(getObgectFromProducts);
 
 //2. Основываясь на настройки ингредиента пользователя. Создать функцию, которая вернет продукты, в которых не содержится запрещенных пользователем ингредиентов.
 const filterBuUserPreferences = (products, userSettings) => {
@@ -315,7 +315,3 @@ const filterProductsByUserPreferenceAndByPrice = (
       : acc;
   }, []);
 };
-
-// console.log(
-//   filterProductsByUserPreferenceAndByPrice(products, userSettings, 2)
-// );
